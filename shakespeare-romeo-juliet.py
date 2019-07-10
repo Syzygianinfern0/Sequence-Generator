@@ -21,6 +21,7 @@ for char, i in zip(vocab, range(len(vocab))):
 
 # Tokenization
 # ~~~~~~~~~~~~
+vocab = sorted(set(TEXT))
 tokenizer = Tokenizer(filters=None,  # Allow all punctuation and special characters
                       lower=False,  # <--- Preserve names and stuff
                       split='',  # <--- To look at characters
@@ -60,3 +61,17 @@ for chunk in SEQUENCES:
 # Show the 1st entry
 print(f"Input  : {repr(''.join(tokenizer.sequences_to_texts(INPUT[0])))}")
 print(f"Output : {repr(''.join(tokenizer.sequences_to_texts(OUTPUT[0])))}")"""
+
+model = Sequential([
+    Embedding(input_dim=len(vocab),
+              output_dim=256),
+    Bidirectional(CuDNNLSTM(units=512,
+                            return_sequences=True,
+                            stateful=True,
+                            recurrent_initializer='glorot_uniform')),
+    Dropout(0.2),
+    CuDNNLSTM(units=256),
+    Dense(units=len(vocab)/2,
+          )
+
+])
