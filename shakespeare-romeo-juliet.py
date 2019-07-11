@@ -1,8 +1,5 @@
 import tensorflow as tf
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Embedding, CuDNNLSTM, Dense, Dropout, Bidirectional
-from tensorflow.python.keras.optimizers import Adam
-from tensorflow.python.keras.preprocessing.text import Tokenizer
+from tensorflow._api.v2.v2 import keras
 import numpy as np
 
 with open('data/original text/shakespeare-romeo-juliet.txt', 'r') as handler:
@@ -22,11 +19,11 @@ for char, i in zip(vocab, range(len(vocab))):
 # Tokenization
 # ~~~~~~~~~~~~
 vocab = sorted(set(TEXT))
-tokenizer = Tokenizer(filters=None,  # Allow all punctuation and special characters
-                      lower=False,  # <--- Preserve names and stuff
-                      split='',  # <--- To look at characters
-                      char_level=True,  # <--- To work on a character level of split
-                      oov_token='<OOV>')
+tokenizer = keras.preprocessing.text.Tokenizer(filters=None,  # Allow all punctuation and special characters
+                                               lower=False,  # <--- Preserve names and stuff
+                                               split='',  # <--- To look at characters
+                                               char_level=True,  # <--- To work on a character level of split
+                                               oov_token='<OOV>')
 
 tokenizer.fit_on_texts(TEXT)
 
@@ -62,16 +59,27 @@ for chunk in SEQUENCES:
 print(f"Input  : {repr(''.join(tokenizer.sequences_to_texts(INPUT[0])))}")
 print(f"Output : {repr(''.join(tokenizer.sequences_to_texts(OUTPUT[0])))}")"""
 
-model = Sequential([
-    Embedding(input_dim=len(vocab),
-              output_dim=256),
-    Bidirectional(CuDNNLSTM(units=512,
-                            return_sequences=True,
-                            stateful=True,
-                            recurrent_initializer='glorot_uniform')),
-    Dropout(0.2),
-    CuDNNLSTM(units=256),
-    Dense(units=len(vocab)/2,
-          )
-
+model = keras.models.Sequential([
+    keras.layers.Embedding(input_dim=len(vocab),
+                           output_dim=256,
+                           batch_input_shape=[1, None]
+                           ),
+    keras.layers.Bidirectional(keras.layers.LSTM(units=512,
+                                                 return_sequences=True,
+                                                 stateful=True,
+                                                 recurrent_initializer='glorot_uniform')),
+    keras.layers.Dropout(0.2),
+    keras.layers.Bidirectional(keras.layers.LSTM(units=512,
+                                                 return_sequences=True,
+                                                 stateful=True,
+                                                 recurrent_initializer='glorot_uniform')),
+    keras.layers.Dense(units=len(vocab) / 2,
+                       activation='relu',
+                       kernel_regularizer=keras.regularizers.l2(0.2)),
+    keras.layers.Dropout(0.1),
+    keras.layers.Dense(len(vocab))
 ])
+
+print(model.summary())
+
+predicted = model.predict(INPUT[:1])
