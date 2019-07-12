@@ -78,8 +78,26 @@ model = keras.models.Sequential([
                        kernel_regularizer=keras.regularizers.l2(0.2)),
     keras.layers.Dropout(0.1),
     keras.layers.Dense(len(vocab))
+
 ])
 
 print(model.summary())
 
-predicted = model.predict(INPUT[:1])
+
+# predicted = model.predict(INPUT[:1])
+
+
+def prediction(predicted):
+    string = ''
+    for i in range(len(predicted)):
+        string += tokenizer.sequences_to_texts(tf.random.categorical(predicted[i], 1).numpy())[0]
+    return string
+
+
+# def loss(labels, logits):
+#     return tf.keras.losses.sparse_categorical_crossentropy(labels, logits, from_logits=True)
+
+model.compile(optimizer='adam',
+              loss=keras.losses.sparse_categorical_crossentropy)
+
+model.fit(INPUT, OUTPUT)
