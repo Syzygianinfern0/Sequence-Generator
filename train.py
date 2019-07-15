@@ -35,14 +35,12 @@ class TextTrainer:
     def make_model(self,
                    embedding_size=256,
                    lstm_units=1024,
-                   lstm_layers=1,
-                   lr=0.001):
+                   lstm_layers=1):
         """
         Creates the model
         :param embedding_size: Dimensionality of the Embedding
         :param lstm_units: Number of units
         :param lstm_layers: Number of stacked layers
-        :param lr: Optimizer Learning rate
         :return: Sequential Model
         """
         model = tf.keras.Sequential()
@@ -54,7 +52,6 @@ class TextTrainer:
                                            return_sequences=True,
                                            stateful=True))
         model.add(tf.keras.layers.Dense(len(self.vocab)))
-        self.opt = tf.keras.optimizers.Adam(learning_rate=lr)
         return model
 
     def train(self,

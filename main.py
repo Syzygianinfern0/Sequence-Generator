@@ -2,9 +2,9 @@ import tensorflow as tf
 import numpy as np
 from tensorflow._api.v2.compat.v1 import ConfigProto
 from tensorflow._api.v2.compat.v1 import InteractiveSession
-import train
-import time
-import os
+import train, sample
+import time, os
+import random, string
 
 config = ConfigProto()
 config.gpu_options.allow_growth = True
@@ -47,6 +47,7 @@ if __name__ == '__main__':
         # Training
         p5 = input("\n\nEpochs (Def:100) : ")
         p5 = 100 if p5 == '' else int(p5)
+        ## Callbacks
         c2 = input("\n\nDo you want to use Tensorboard to track? (y/n) : ")
         if c2.lower() == 'y':
             p6 = input(f"Enter Dir name (it will automatically be timestamped and saved under '.\\logs') "
@@ -64,7 +65,8 @@ if __name__ == '__main__':
             agent.train(model=model,
                         epochs=p5)
 
-        c3 = input("Do you want to save your model? (y/n) : ")
+        # Saving
+        c3 = input("\n\nDo you want to save your model? (y/n) : ")
         if c3.lower() == 'y':
             p7 = input(f"Enter File name (it will automatically be timestamped and saved under '.\\models') "
                        f"\n (Def: .\\models\\embedding_size-lstm_units-lstm_layers-epochs-timestamp.h5)  : ")
@@ -75,7 +77,27 @@ if __name__ == '__main__':
             model.save_weights(filepath=f'models\\{p7}')
 
     elif c1 == '2':
-        pass
+        print("\n\nJust press enter for default values")
+        p1 = input("Path for sampling text (Def: 'data/train_text/rj.txt') : ") or 'data/train_text/rj.txt'
+        agent = sample.TextSampler(file=p1)
+        p2 = input("Path for trained weights (Def: 'models/rj.h5' : ") or 'models/rj.h5'
+        p3 = input("Embedding Size (Def:256) : ") or 256
+        p4 = int(input("LSTM Units (Def:1024) : ") or 1024)
+        p5 = int(input("LSTM Layers (Def:1) : ") or 1)
+
+        model = agent.make_model(trained_weights=p2,
+                                 embedding_size=p3,
+                                 lstm_units=p4,
+                                 lstm_layers=p5)
+        print("\n\n")
+        model.summary()
+        cont = 'y'
+        while cont.lower() == 'y':
+            agent.generate_text()
+            cont = input("Do you want to try again? (y/n) : ")
+
+
+
 
 
 
