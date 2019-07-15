@@ -19,14 +19,17 @@ To form the vocab to train on, we use the ```sorted(set(TEXT))```. This allows e
 char to appear only once and then we sort it to maintain uniformity. A *to* and *from*
 dictionary is made to allow easy conversion.
 <br>
-The `TOKENIZED`[^1] variable is created by converting the whole `TEXT`[^2] into integers by 
+The `TOKENIZED`<sup id="a1">[1](#f1)</sup> variable is created by converting the whole 
+`TEXT`<sup id="a2">[2](#f2)</sup> into integers by 
 using the dictionary for conversion.
 
-[^1]: Shape: {None} Type: str
-[^2]: Shape: {None} Type: ndarray
+<b id="f1">1</b> Shape: {None} Type: str [↩](#a1)
+
+<b id="f2">2</b> Shape: {None} Type: ndarray [↩](#a2)
 
 ## Datasets
 ### Basic
 The entire 
+
 
 
