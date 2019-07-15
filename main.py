@@ -93,11 +93,8 @@ if __name__ == '__main__':
         model.summary()
         cont = 'y'
         while cont.lower() == 'y':
-            agent.generate_text()
-            cont = input("Do you want to try again? (y/n) : ")
-
-
-
-
-
-
+            p6 = float(input("\n\nEnter temperature to sample with (Def: 1.0) "
+                             "(Hint: Higher equals more surprising) :") or 1.0)
+            agent.generate_text(model=model,
+                                temp=p6)
+            cont = input("\n\n\nDo you want to try again? (y/n) : ")

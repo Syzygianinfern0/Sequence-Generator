@@ -40,6 +40,12 @@ class TextSampler:
         return model
 
     def generate_text(self, model, temp=1.0):
+        """
+        Generates text using the model with the passed seed
+        :param model: Trained Model
+        :param temp: Temperature of predictions (Higher equals more surprising)
+        :return: None
+        """
         num = int(input("\n\nEnter number of characters to sample (Def:1000) : ") or 1000)
         seed = input("Enter start string (Def: Random letter) : ") or random.choice(string.ascii_uppercase)
 
