@@ -27,7 +27,7 @@ class TextTrainer:
         # Forming Train Data, Labels
         self._create_train_dataset(sequences)
 
-        print(f"Length of text : {len(self.original_text)} characters \nNumber of unique characters : "
+        print(f"\n\nLength of text : {len(self.original_text)} characters \nNumber of unique characters : "
               f"{len(self.vocab)}\n\n")
         print(30 * '-')
         print(f"\n\nFirst few characters : \n{self.original_text[:250]}")
@@ -54,15 +54,7 @@ class TextTrainer:
                                            return_sequences=True,
                                            stateful=True))
         model.add(tf.keras.layers.Dense(len(self.vocab)))
-        print(model.summary())
-
-        def loss(labels, logits):
-            return tf.keras.losses.sparse_categorical_crossentropy(labels,
-                                                                   logits,
-                                                                   from_logits=True)
-        opt = tf.keras.optimizers.Adam(learning_rate=lr)
-        model.compile(optimizer=opt,
-                      loss=loss)
+        self.opt = tf.keras.optimizers.Adam(learning_rate=lr)
         return model
 
     def train(self,
@@ -70,12 +62,20 @@ class TextTrainer:
               epochs=100,
               callbacks=None):
         """
-        Trains the model using the .fit method on a Sequential model
+        Compiles and Trains the model using the .fit method on a Sequential model
         :param model: An object of tf.keras.models.Sequential
         :param epochs: Number of training loops
         :param callbacks: Specify callbacks as a list as how an argument is passed
         :return: None
         """
+
+        def loss(labels, logits):
+            return tf.keras.losses.sparse_categorical_crossentropy(labels,
+                                                                   logits,
+                                                                   from_logits=True)
+
+        model.compile(optimizer=self.opt,
+                      loss=loss)
         model.fit(self.train_data, epochs=epochs, callbacks=callbacks)
 
     def _read_file(self, file):
