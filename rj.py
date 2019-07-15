@@ -8,7 +8,7 @@ config = ConfigProto()
 config.gpu_options.allow_growth = True
 session = InteractiveSession(config=config)
 
-TEXT = open('data/original text/shakespeare-romeo-juliet.txt').read()
+TEXT = open('data/train_text/rj.txt').read()
 vocab = sorted(set(TEXT))
 char2idx = {char: i for i, char in enumerate(vocab)}
 idx2char = np.array(vocab)
