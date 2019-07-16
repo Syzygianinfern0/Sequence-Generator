@@ -72,7 +72,7 @@ class TextSampler:
         :param file: File name as relative path to parent directory
         :return: None
         """
-        self.original_text = open(file).read()
+        self.original_text = open(file, 'rb').read().decode('utf-8')
         self.vocab = sorted(set(self.original_text))
         self.char2idx = {char: i for i, char in enumerate(self.vocab)}
         self.idx2char = np.array(self.vocab)
