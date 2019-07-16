@@ -1,17 +1,17 @@
 import tensorflow as tf
 # noinspection PyProtectedMember
-from tensorflow._api.v2.compat.v1 import ConfigProto
+# from tensorflow._api.v2.compat.v1 import ConfigProto
 # noinspection PyProtectedMember
-from tensorflow._api.v2.compat.v1 import InteractiveSession
+# from tensorflow._api.v2.compat.v1 import InteractiveSession
 import train
 import sample
 import time
 import os
 
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-config = ConfigProto()
-config.gpu_options.allow_growth = True
-session = InteractiveSession(config=config)
+# config = ConfigProto()
+# config.gpu_options.allow_growth = True
+# session = InteractiveSession(config=config)
 
 if __name__ == '__main__':
     print("\n\n1. Train \n2. Sample")
