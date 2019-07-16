@@ -1,10 +1,12 @@
 import tensorflow as tf
-import numpy as np
+# noinspection PyProtectedMember
 from tensorflow._api.v2.compat.v1 import ConfigProto
+# noinspection PyProtectedMember
 from tensorflow._api.v2.compat.v1 import InteractiveSession
-import train, sample
-import time, os
-import random, string
+import train
+import sample
+import time
+import os
 
 config = ConfigProto()
 config.gpu_options.allow_growth = True
@@ -47,7 +49,7 @@ if __name__ == '__main__':
         # Training
         p5 = input("\n\nEpochs (Def:100) : ")
         p5 = 100 if p5 == '' else int(p5)
-        ## Callbacks
+        # Callbacks
         c2 = input("\n\nDo you want to use Tensorboard to track? (y/n) : ")
         if c2.lower() == 'y':
             p6 = input(f"Enter Dir name (it will automatically be timestamped and saved under '.\\logs') "

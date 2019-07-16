@@ -15,6 +15,7 @@ class TextTrainer:
         """
         self.bs = batch_size
         self.seq_len = sequence_length
+        self.opt = None
         # Reading the file
         self._read_file(file)
 
@@ -35,12 +36,14 @@ class TextTrainer:
     def make_model(self,
                    embedding_size=256,
                    lstm_units=1024,
-                   lstm_layers=1):
+                   lstm_layers=1,
+                   lr=0.001):
         """
         Creates the model
         :param embedding_size: Dimensionality of the Embedding
         :param lstm_units: Number of units
         :param lstm_layers: Number of stacked layers
+        :param lr: Learning Rate for optimizer
         :return: Sequential Model
         """
         model = tf.keras.Sequential()
@@ -52,6 +55,7 @@ class TextTrainer:
                                            return_sequences=True,
                                            stateful=True))
         model.add(tf.keras.layers.Dense(len(self.vocab)))
+        self.opt = tf.keras.optimizers.Adam(learning_rate=lr)
         return model
 
     def train(self,

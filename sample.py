@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
-import random, string
+import random
+import string
 
 
 class TextSampler:
@@ -49,13 +50,14 @@ class TextSampler:
         num = int(input("\n\nEnter number of characters to sample (Def:1000) : ") or 1000)
         seed = input("Enter start string (Def: Random letter) : ") or random.choice(string.ascii_uppercase)
 
+        # noinspection PyUnusedLocal
         input_idx = [self.char2idx[c] for c in seed]
-        input_idx = tf.expand_dims(input, axis=0)
+        input_idx = tf.expand_dims(input_idx, axis=0)
         gen = []
         model.reset_states()
 
         for i in range(num):
-            pred = model.predict(input)
+            pred = model.predict(input_idx)
             pred = tf.squeeze(pred, axis=0)
             pred /= temp
             pred_idx = tf.random.categorical(logits=pred,
