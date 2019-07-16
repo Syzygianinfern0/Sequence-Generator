@@ -4,7 +4,7 @@ import numpy as np
 
 class TextTrainer:
     def __init__(self,
-                 file='data/train_text/rj.txt',
+                 file='data\\train_text\\rj.txt',
                  sequence_length=100,
                  batch_size=64):
         """
@@ -85,7 +85,7 @@ class TextTrainer:
         :param file: File name as relative path to parent directory
         :return: None
         """
-        self.original_text = open(file).read()
+        self.original_text = open(file, 'rb').read().decode(encoding='utf-8')
         self.vocab = sorted(set(self.original_text))
         self.char2idx = {char: i for i, char in enumerate(self.vocab)}
         self.idx2char = np.array(self.vocab)

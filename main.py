@@ -8,6 +8,7 @@ import sample
 import time
 import os
 
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 config = ConfigProto()
 config.gpu_options.allow_growth = True
 session = InteractiveSession(config=config)
@@ -18,10 +19,10 @@ if __name__ == '__main__':
     if c1 == '1':
         # Making the Agent
         print("\n\nJust press enter for default values")
-        p1 = input("\nFile Path for training text (Def:'data/train_text/rj.txt') : ")
+        p1 = input("\nFile Path for training text (Def:'data\\train_text\\rj.txt') : ")
         p2 = input("Sequence Length (Def:100) : ")
         p3 = input("Batch Size (Def:64) : ")
-        p1 = 'data/train_text/rj.txt' if p1 == '' else p1
+        p1 = 'data\\train_text\\rj.txt' if p1 == '' else p1
         p2 = 100 if p2 == '' else int(p2)
         p3 = 64 if p3 == '' else int(p3)
         print("")
